@@ -1,7 +1,7 @@
 ---
-glusterfs_version: 3.7.3
+glusterfs_version: 3.7.8
 glusterfs_minor_version: 3.7
-glusterfs_repo_sha256sum: 9de3762d86f00fd7504ee68584d855dacb277217f29d43ffcdff7f8663f61c81
+glusterfs_repo_sha256sum: ee06398d5b09d230fa3ffad4995b83089012a426265741c58a70bf587d14613c
 
 glusterfs_mode: client
 glusterfs_replication: "{{ groups[glusterfs_server_group] | count }}"
