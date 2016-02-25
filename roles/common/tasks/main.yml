@@ -21,6 +21,7 @@
     - firewalld
     - iptables-services
   when: ansible_distribution == "CentOS" and ansible_distribution_version == "7.1.1503"
+  ignore_errors: true
   tags:
     - common
 
