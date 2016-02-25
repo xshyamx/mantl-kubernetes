@@ -5,7 +5,7 @@ glusterfs_repo_sha256sum: ee06398d5b09d230fa3ffad4995b83089012a426265741c58a70bf
 
 glusterfs_mode: client
 glusterfs_replication: "{{ groups[glusterfs_server_group] | count }}"
-glusterfs_server_group: role=master
+glusterfs_server_group: master
 
 # brick storage
 glusterfs_brick_mount: /mnt/glusterfs
