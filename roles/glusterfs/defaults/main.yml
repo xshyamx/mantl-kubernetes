@@ -1,0 +1,18 @@
+---
+glusterfs_version: 3.7.3
+glusterfs_minor_version: 3.7
+glusterfs_repo_sha256sum: 9de3762d86f00fd7504ee68584d855dacb277217f29d43ffcdff7f8663f61c81
+
+glusterfs_mode: client
+glusterfs_replication: "{{ groups[glusterfs_server_group] | count }}"
+glusterfs_server_group: role=master
+
+# brick storage
+glusterfs_brick_mount: /mnt/glusterfs
+glusterfs_brick_device: /dev/vdb
+glusterfs_volume_force: no
+glusterfs_brick_location: "{{ glusterfs_brick_mount }}"
+
+# docker volume
+glusterfs_volume_name: container-volumes
+glusterfs_volume_mount: "/mnt/{{ glusterfs_volume_name }}"

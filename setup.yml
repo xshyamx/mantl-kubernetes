@@ -10,7 +10,10 @@
 - name: Master
   hosts: master
   gather_facts: no
+  vars:
+    glusterfs_mode: server
   roles:
+    - glusterfs
     - etcd
     - flannel
     - docker
@@ -23,7 +26,10 @@
 - name: Node
   hosts: node
   gather_facts: no
+  vars:
+    glusterfs_mode: client
   roles:
+    - glusterfs
     - flannel
     - docker
     - kubernetes
