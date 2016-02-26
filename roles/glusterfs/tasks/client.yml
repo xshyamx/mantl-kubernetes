@@ -16,5 +16,28 @@
     name: "{{ glusterfs_volume_mount }}"
     fstype: glusterfs
     src: "localhost:/{{ glusterfs_volume_name }}"
+  when: glusterfs_mode == "server"
+  tags:
+    - glusterfs
+
+- name: mount volume for use
+  sudo: yes
+  mount:
+    state: mounted
+    name: "{{ glusterfs_volume_mount }}"
+    fstype: glusterfs
+    src: "localhost:/{{ glusterfs_volume_name }}"
+  when: glusterfs_mode == "server"
+  tags:
+    - glusterfs
+
+- name: mount volume for use
+  sudo: yes
+  mount:
+    state: mounted
+    name: "{{ glusterfs_volume_mount }}"
+    fstype: glusterfs
+    src: "{{ groups['master'][0] }}:/{{ glusterfs_volume_name }}"
+  when: glusterfs_mode == "client"
   tags:
     - glusterfs
