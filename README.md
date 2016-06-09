@@ -27,8 +27,9 @@ All of the addons depend on the DNS addon for Service Discovery.
 
 - Install [terraform](https://www.terraform.io/downloads.html)
 
-        # change 0.6.9 to the desired version
-        wget -q -O terraform.zip https://dl.bintray.com/mitchellh/terraform/terraform_0.6.9_linux_amd64.zip
+        # download the latest terraform release
+        terraform_version=$(curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r '.name|ltrimstr("v")')
+        wget -q -O terraform.zip https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip
         unzip terraform.zip -d /usr/local/bin
 
 - Install pip package (CentOS/RedHat)
