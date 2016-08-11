@@ -58,6 +58,7 @@
     - common
 
 - include: upgrade-packages.yml
+- include: mounts.yml
 
 - name: enable EPEL repo
   sudo: yes
