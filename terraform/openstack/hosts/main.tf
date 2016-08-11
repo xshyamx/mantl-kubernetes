@@ -32,7 +32,7 @@ resource "template_file" "cloud-init-node" {
 }
 
 resource "openstack_blockstorage_volume_v1" "master" {
-  name = "${ var.short_name }--${format("%02d", count.index+1) }"
+  name = "${ var.short_name }-master-docker-${format("%02d", count.index+1) }"
   description = "${ var.short_name }-master-docker-${format("%02d", count.index+1) }"
   size = "${ var.docker_volume_size }"
   metadata = {
@@ -62,7 +62,7 @@ resource "openstack_compute_instance_v2" "master" {
 }
 
 resource "openstack_blockstorage_volume_v1" "node" {
-  name = "${ var.short_name }--${format("%02d", count.index+1) }"
+  name = "${ var.short_name }-node-docker-${format("%02d", count.index+1) }"
   description = "${ var.short_name }-node-docker-${format("%02d", count.index+1) }"
   size = "${ var.docker_volume_size }"
   metadata = {
