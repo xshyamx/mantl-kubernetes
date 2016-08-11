@@ -6,7 +6,7 @@ variable keypair_name {}
 variable cluster_name {}
 variable master_flavor {}
 variable node_flavor {}
-variable image_name {}
+variable image_id {}
 variable datacenter {}
 variable net_id {}
 variable master_count {}
@@ -15,6 +15,7 @@ variable ssh_user {}
 variable short_name {}
 variable host_domain {}
 variable docker_volume_size {}
+variable root_volume_size {}
 
 provider "openstack" {
   auth_url = "${ var.auth_url }"
@@ -39,7 +40,7 @@ module "k8s-hosts" {
   master_flavor = "${ var.master_flavor }"
   node_flavor = "${ var.node_flavor }"
   net_id = "${ var.net_id }"
-  image_name = "${ var.image_name }"
+  image_id = "${ var.image_id }"
   keypair_name = "${ module.k8s-keypair.keypair_name }"
   master_count = "${ var.master_count }"
   node_count = "${ var.node_count }"
@@ -48,4 +49,5 @@ module "k8s-hosts" {
   short_name = "${ var.short_name }"
   host_domain = "${ var.host_domain }"
   docker_volume_size = "${ var.docker_volume_size }"
+  root_volume_size = "${ var.root_volume_size }"
 }

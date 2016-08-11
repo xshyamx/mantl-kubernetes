@@ -10,7 +10,7 @@ tenant_name = ""
 public_key = ""
 keypair_name = ""
 cluster_name = ""
-image_name = ""
+image_id = ""
 master_flavor = ""
 node_flavor = ""
 master_count = "3"
@@ -20,6 +20,8 @@ ssh_user = "centos"
 short_name = "k8s"
 host_domain = "novalocal"
 
+root_volume_size = "20"
+docker_volume_size = "50"
 # If using openstack-floating.sample.tf, set the two variables below
 
 floating_pool = ""
