@@ -76,7 +76,7 @@ resource "openstack_blockstorage_volume_v2" "node" {
   metadata = {
     usage = "/var/lib/docker"
   }
-  count = "${ var.node }"
+  count = "${ var.node_count }"
 }
 
 resource "openstack_compute_instance_v2" "node" {
