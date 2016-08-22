@@ -1,5 +1,5 @@
 ---
-name: create mount point for docker containers
+- name: create mount point for docker containers
   sudo: yes
   file:
     state: directory
@@ -10,7 +10,7 @@ name: create mount point for docker containers
     - docker
     - volume
 
-name: format docker container volume
+- name: format docker container volume
   sudo: yes
   filesystem:
     dev: '{{ docker_volume_device }}'
@@ -20,7 +20,7 @@ name: format docker container volume
     - docker
     - volume
 
-name: mount volume for use
+- name: mount volume for use
   sudo: yes
   mount:
     state: mounted

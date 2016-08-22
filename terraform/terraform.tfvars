@@ -22,6 +22,7 @@ host_domain = "novalocal"
 
 root_volume_size = "20"
 docker_volume_size = "50"
+
 # If using openstack-floating.sample.tf, set the two variables below
 
 floating_pool = ""
