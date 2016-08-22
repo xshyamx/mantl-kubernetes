@@ -1,0 +1,80 @@
+- name: Create nagios group
+  sudo: yes
+  group:
+    name: "{{ nagios_group }}"
+  tags:
+    - nagios
+
+- name: Create nagios user
+  sudo: yes
+  user:
+    name: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    comment: Nagios User
+  tags:
+    - nagios
+
+- name: Download nrpe agent
+  sudo: yes
+  get_url: 
+    url: "{{ nrpe_url_prefix }}/{{ nrpe_tarball }}"
+    dest: "/home/{{ nagios_user }}"
+    owner: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    mode: 0544
+    checksum: "sha256:{{ nrpe_sha256sum }}"
+  tags:
+    - nrpe
+    - nagios
+
+- name: Create folder to extract
+  sudo: yes
+  file:
+    state: directory
+    path: "/home/{{ nagios_user }}/nagios"
+    owner: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    mode: 0755
+  tags:
+    - nrpe
+    - nagios
+
+- name: Extract nrpe agent
+  sudo: yes
+  unarchive: 
+    src: "/home/{{ nagios_user }}/{{ nrpe_tarball }}"
+    copy: no
+    dest: "/home/{{ nagios_user }}"
+    owner: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    mode: 0755
+  tags:
+    - nrpe
+    - nagios
+
+- name: Fix nrpe configuration
+  sudo: yes
+  template:
+    src: nrpe.cfg.j2
+    dest: "/home/{{ nagios_user }}/nagios/nrpe/etc/nrpe.cfg"
+    owner: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    mode: 0644
+  tags:
+    - nrpe
+    - nagios
+      
+- name: create nagios systemd unit
+  sudo: yes
+  template:
+    src: nagios.service.j2
+    dest: /usr/lib/systemd/system/nagios.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd
+    - restart nagios
+  tags:
+    - nrpe
+    - nagios

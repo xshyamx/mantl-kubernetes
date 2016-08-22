@@ -5,6 +5,7 @@
   hosts: all
   roles:
     - common
+    - nagios
 
 # provide the control plane
 - name: Master

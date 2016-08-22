@@ -1,0 +1,17 @@
+[Unit]
+Description=Nagios NRPE Agent
+Documentation=https://support.nagios.com/kb/category.php?id=10
+After=network.target
+Requires=network.target,local-fs.target
+
+[Service]
+Type=forking
+ExecStart=/home/{{ nagios_user }}/nagios/nrpe/bin/nrpe-svc-exec start
+ExecStop=ExecStart=/home/{{ nagios_user }}/nrpe/bin/nrpe-svc-exec stop
+PIDFile=/home/{{ nagios_user }}/nagios/nrpe/nrpe_local.pid
+User={{ nagios_user }}
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

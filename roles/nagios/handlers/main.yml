@@ -1,0 +1,10 @@
+---
+- name: reload systemd
+  sudo: yes
+  command: systemctl --system daemon-reload
+
+- name: restart nagios
+  sudo: yes
+  service:
+    name: nagios
+    state: restarted
