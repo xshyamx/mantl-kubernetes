@@ -41,10 +41,18 @@
 
 - name: Extract nrpe agent
   sudo: yes
-  unarchive: 
-    src: "/home/{{ nagios_user }}/{{ nrpe_tarball }}"
-    copy: no
-    dest: "/home/{{ nagios_user }}"
+  command: "/usr/bin/tar -zxf /home/{{ nagios_user }}/{{ nrpe_tarball }}"
+  args:
+    chdir: "/home/{{ nagios_user }}"
+  tags:
+    - nrpe
+    - nagios
+
+- name: Fix permissions
+  sudo: yes
+  file:
+    path: "/home/{{ nagios_user }}/nagios"
+    recurse: yes
     owner: "{{ nagios_user }}"
     group: "{{ nagios_group }}"
     mode: 0755
