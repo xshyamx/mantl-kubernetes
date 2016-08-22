@@ -1,2 +1,2 @@
-docker_volume_mount = "/var/lib/docker"
-docker_volume_device = "/dev/vdb"
+docker_volume_mount: /var/lib/docker
+docker_volume_device: /dev/vdb
