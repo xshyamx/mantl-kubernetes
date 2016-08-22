@@ -1,7 +1,6 @@
 variable master_count { }
 variable master_flavor { }
 variable datacenter { default = "openstack" }
-variable glusterfs_volume_size { default = "100" } # size is in gigabytes
 variable image_name { }
 variable keypair_name { }
 variable net_id { }
@@ -11,6 +10,8 @@ variable security_groups { }
 variable short_name { default = "k8s" }
 variable host_domain { default = "novalocal" }
 variable ssh_user { default = "centos" }
+variable docker_volume_size { default = "50" }
+variable docker_volume_device { default = "/dev/vdb" }
 
 resource "template_file" "cloud-init-master" {
   count         = "${ var.master_count }"
@@ -30,12 +31,12 @@ resource "template_file" "cloud-init-node" {
   }
 }
 
-resource "openstack_blockstorage_volume_v1" "k8s-glusterfs" {
-  name = "${ var.short_name }-master-glusterfs-${format("%02d", count.index+1) }"
-  description = "${ var.short_name }-master-glusterfs-${format("%02d", count.index+1) }"
-  size = "${ var.glusterfs_volume_size }"
+resource "openstack_blockstorage_volume_v1" "master" {
+  name = "${ var.short_name }-master-docker-${format("%02d", count.index+1) }"
+  description = "${ var.short_name }-master-docker-${format("%02d", count.index+1) }"
+  size = "${ var.docker_volume_size }"
   metadata = {
-    usage = "container-volumes"
+    usage = "/var/lib/docker"
   }
   count = "${ var.master_count }"
 }
@@ -47,17 +48,27 @@ resource "openstack_compute_instance_v2" "master" {
   flavor_name = "${ var.master_flavor }"
   security_groups = [ "${ var.security_groups }", "default" ]
   network = { uuid  = "${ var.net_id }" }
-  volume = {
-    volume_id = "${element(openstack_blockstorage_volume_v1.k8s-glusterfs.*.id, count.index)}"
-    device = "/dev/vdb"
-  }
   metadata = {
     dc = "${var.datacenter}"
     role = "master"
     ssh_user = "${ var.ssh_user }"
   }
+  volume {
+    volume_id = "${ element(openstack_blockstorage_volume_v1.master.*.id, count.index) }"
+    device = "${ var.docker_volume_device }"
+  }
   count = "${ var.master_count }"
   user_data = "${ element(template_file.cloud-init-master.*.rendered, count.index) }"
+}
+
+resource "openstack_blockstorage_volume_v1" "node" {
+  name = "${ var.short_name }-node-docker-${format("%02d", count.index+1) }"
+  description = "${ var.short_name }-node-docker-${format("%02d", count.index+1) }"
+  size = "${ var.docker_volume_size }"
+  metadata = {
+    usage = "/var/lib/docker"
+  }
+  count = "${ var.node_count }"
 }
 
 resource "openstack_compute_instance_v2" "node" {
@@ -71,6 +82,10 @@ resource "openstack_compute_instance_v2" "node" {
     dc = "${var.datacenter}"
     role = "node"
     ssh_user = "${ var.ssh_user }"
+  }
+  volume {
+    volume_id = "${ element(openstack_blockstorage_volume_v1.node.*.id, count.index) }"
+    device = "${ var.docker_volume_device }"
   }
   count = "${ var.node_count }"
   user_data = "${ element(template_file.cloud-init-node.*.rendered, count.index) }"
