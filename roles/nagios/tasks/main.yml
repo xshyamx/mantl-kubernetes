@@ -60,6 +60,19 @@
     - nrpe
     - nagios
 
+- name: Add service check plugin
+  sudo: yes
+  copy:
+  copy:
+    src: check_service
+    dest: "/home/{{ nagios_user }}/nagios/nrpe/libexec/check_service"
+    owner: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    mode: 0755
+  tags:
+    - nrpe
+    - nagios
+
 - name: Fix nrpe configuration
   sudo: yes
   template:
