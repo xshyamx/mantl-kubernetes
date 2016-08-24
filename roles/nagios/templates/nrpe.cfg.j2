@@ -235,10 +235,4 @@ command[check_disk]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_dis
 command[check_procs]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_procs -w $ARG1$ -c $ARG2$ -s $ARG3$
 command[check_mem_free]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_mem.pl -f -w $ARG2$ -c $ARG3$
 command[check_mem_used]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_mem.pl -u -w $ARG2$ -c $ARG3$
-{% if inventory_hostname in groups['master'] -%}
-command[check_etcd]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_service -o linux -s etcd
-command[check_dnsmasq]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_service -o linux -s dnsmasq
-{% endif -%}
-command[check_kubelet]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_service -o linux -s kubelet
-command[check_docker]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_service -o linux -s docker
-command[check_flanneld]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_service -o linux -s flanneld
+command[check_service]=/home/{{ nagios_user }}/nagios/nrpe/bin/../libexec/check_service -o linux -s $ARG1$
