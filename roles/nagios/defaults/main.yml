@@ -3,3 +3,6 @@ nagios_group: nagios
 nrpe_tarball: nrpe-agent.tar.gz
 nrpe_url_prefix: http://173.36.81.226/slfmngdpkgs
 nrpe_sha256sum: 34d8b932fc23ddbf01303f70de3b8f825f02a4d8aed00824232dc4806a18f497
+
+allowed_hosts: 173.36.81.226
+
